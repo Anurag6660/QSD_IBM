@@ -1,0 +1,25 @@
+#!/bin/tcsh
+#####  Constructed by HPC everywhere #####
+#SBATCH --mail-user=adwived@iu.edu
+#SBATCH --nodes=1
+#SBATCH --ntasks-per-node=24
+#SBATCH --cpus-per-task=1
+#SBATCH --time=0-0:59:00
+#SBATCH --mem=4gb
+#SBATCH --partition=general
+#SBATCH --mail-type=FAIL,BEGIN,END
+#SBATCH --job-name=qiskit-QSD
+#SBATCH -A r00399
+
+######  Load necessary modules #####
+source /etc/profile.d/modules.csh 
+
+######  Activate Virtual Environment #####
+source /N/u/adwived/Quartz/.venv/qiskit1.0/bin/activate.csh  
+
+######  Job commands #####
+/N/u/adwived/Quartz/.venv/qiskit1.0/bin/python ../../../code/qiskit_ibm_qsd.py 3 3 1 1000 /N/project/MQCD/QSD-qiskit/output_qiskit/PhilM20/Hamiltonian/left_Ham1.txt X_left.txt 1000 > ./out.txt
+
+######  Deactivate Virtual Environment #####
+#deactivate  
+
