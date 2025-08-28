@@ -1,8 +1,14 @@
 import numpy as np
 import pytest
+from pathlib import Path
+import sys
+import scipy
+
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent / "src"))
+
 from qiskit import QuantumCircuit
 from qiskit.quantum_info import Statevector
-from src.qiskit_qsd4 import (
+from qiskit_ibm_qsd import (
     create_unitary,
     create_state_unitary,
     calculate_probabilities,
@@ -80,7 +86,7 @@ def test_mini_qsd_simulation():
                   [0, 0, 1, 0],
                   [0, 1, 0, 0],
                   [0, 0, 0, 1]])  # simple 2-qubit Hamiltonian
-    state = np.array([1, 0, 0, 0])
+    state = np.array([1, 0, 0, 0], dtype=float)
     state /= np.linalg.norm(state)
     nshots = 100
 
@@ -98,7 +104,7 @@ def test_mini_qsd_simulation():
     for k, t in enumerate(t_steps):
         U = create_unitary(H, t)
         # Compose QSD state with evolution
-        from src.qiskit_qsd4 import create_quantum_circuit1
+        from qiskit_ibm_qsd import create_quantum_circuit1
         qc = create_quantum_circuit1(N, qsd_state, U)
         counts = simulate_circuit(qc, nshots)
         probs[:, k] = calculate_probabilities(counts, N, nshots)
